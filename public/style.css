@@ -1,0 +1,806 @@
+/* ==========================================================================
+   Liquid Glass UI Design System
+   Modern Frosted Glassmorphism, Specular Reflections & Fluid Ambient Mesh
+   ========================================================================== */
+
+:root {
+  /* Color Palette */
+  --bg-dark: #070a14;
+  --bg-card: rgba(255, 255, 255, 0.05);
+  --bg-card-hover: rgba(255, 255, 255, 0.08);
+  --bg-input: rgba(15, 23, 42, 0.55);
+  --bg-input-focus: rgba(15, 23, 42, 0.75);
+
+  /* Specular Glass Borders */
+  --glass-border: rgba(255, 255, 255, 0.14);
+  --glass-border-highlight: rgba(255, 255, 255, 0.32);
+  --glass-border-subtle: rgba(255, 255, 255, 0.08);
+
+  /* Text Colors */
+  --text-primary: #f8fafc;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+  --text-accent: #38bdf8;
+
+  /* Accent Brand Gradients */
+  --accent-primary: #6366f1;
+  --accent-secondary: #3b82f6;
+  --accent-cyan: #06b6d4;
+  --accent-magenta: #ec4899;
+
+  /* Status Colors */
+  --status-planned-bg: rgba(168, 85, 247, 0.16);
+  --status-planned-border: rgba(168, 85, 247, 0.35);
+  --status-planned-text: #c084fc;
+
+  --status-progress-bg: rgba(6, 182, 212, 0.16);
+  --status-progress-border: rgba(6, 182, 212, 0.35);
+  --status-progress-text: #38bdf8;
+
+  --status-completed-bg: rgba(16, 185, 129, 0.16);
+  --status-completed-border: rgba(16, 185, 129, 0.35);
+  --status-completed-text: #34d399;
+
+  /* Typography */
+  --font-heading: "Outfit", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-body: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+
+  /* Glass Shadows */
+  --shadow-main: 0 32px 64px -16px rgba(0, 0, 0, 0.7), 
+                 0 16px 32px -12px rgba(0, 0, 0, 0.5),
+                 inset 0 1px 1px 0 rgba(255, 255, 255, 0.3),
+                 inset 0 -1px 1px 0 rgba(0, 0, 0, 0.3);
+
+  --shadow-card: 0 12px 28px -6px rgba(0, 0, 0, 0.35),
+                 inset 0 1px 0 0 rgba(255, 255, 255, 0.2);
+
+  --shadow-button-glow: 0 12px 30px -4px rgba(99, 102, 241, 0.5),
+                        0 0 20px rgba(6, 182, 212, 0.35);
+}
+
+/* Reset & Box Sizing */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+body {
+  margin: 0;
+  padding: 40px 20px 80px;
+  min-height: 100vh;
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--text-primary);
+  background-color: var(--bg-dark);
+  position: relative;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Ambient Liquid Orbs & Mesh Canvas */
+.liquid-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.liquid-grid {
+  position: absolute;
+  inset: 0;
+  background-image: 
+    radial-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+  background-size: 36px 36px;
+  opacity: 0.65;
+  mask-image: radial-gradient(circle at center, black 40%, transparent 90%);
+  -webkit-mask-image: radial-gradient(circle at center, black 40%, transparent 90%);
+}
+
+.liquid-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(100px);
+  opacity: 0.55;
+  will-change: transform;
+}
+
+.orb-primary {
+  width: 520px;
+  height: 520px;
+  top: -120px;
+  left: -80px;
+  background: radial-gradient(circle, #6366f1 0%, #4338ca 70%, transparent 100%);
+  animation: floatOrbPrimary 18s ease-in-out infinite alternate;
+}
+
+.orb-secondary {
+  width: 480px;
+  height: 480px;
+  top: 25%;
+  right: -100px;
+  background: radial-gradient(circle, #06b6d4 0%, #0284c7 70%, transparent 100%);
+  animation: floatOrbSecondary 22s ease-in-out infinite alternate;
+}
+
+.orb-accent {
+  width: 420px;
+  height: 420px;
+  bottom: 5%;
+  left: 15%;
+  background: radial-gradient(circle, #ec4899 0%, #9333ea 70%, transparent 100%);
+  animation: floatOrbAccent 20s ease-in-out infinite alternate;
+}
+
+.orb-ambient {
+  width: 580px;
+  height: 580px;
+  bottom: -150px;
+  right: 10%;
+  background: radial-gradient(circle, #3b82f6 0%, #1d4ed8 70%, transparent 100%);
+  animation: floatOrbAmbient 26s ease-in-out infinite alternate;
+}
+
+@keyframes floatOrbPrimary {
+  0% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(80px, 60px) scale(1.12); }
+  100% { transform: translate(-40px, 90px) scale(0.95); }
+}
+
+@keyframes floatOrbSecondary {
+  0% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(-90px, 70px) scale(1.08); }
+  100% { transform: translate(50px, -60px) scale(0.92); }
+}
+
+@keyframes floatOrbAccent {
+  0% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(70px, -80px) scale(1.15); }
+  100% { transform: translate(-60px, 40px) scale(0.9); }
+}
+
+@keyframes floatOrbAmbient {
+  0% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(-60px, -70px) scale(1.1); }
+  100% { transform: translate(80px, 50px) scale(0.95); }
+}
+
+/* ==========================================================================
+   Main Glass Container
+   ========================================================================== */
+main {
+  position: relative;
+  z-index: 1;
+  max-width: 780px;
+  margin: 0 auto;
+  padding: 44px 40px;
+  background: linear-gradient(
+    145deg, 
+    rgba(255, 255, 255, 0.08) 0%, 
+    rgba(255, 255, 255, 0.02) 60%, 
+    rgba(255, 255, 255, 0.05) 100%
+  );
+  backdrop-filter: blur(28px) saturate(200%);
+  -webkit-backdrop-filter: blur(28px) saturate(200%);
+  border: 1px solid var(--glass-border);
+  border-top: 1px solid var(--glass-border-highlight);
+  border-left: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 28px;
+  box-shadow: var(--shadow-main);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Glass Refractive Top Edge Accent */
+main::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 40px;
+  right: 40px;
+  height: 1px;
+  background: linear-gradient(
+    90deg, 
+    transparent 0%, 
+    rgba(255, 255, 255, 0.6) 30%, 
+    rgba(56, 189, 248, 0.8) 50%, 
+    rgba(255, 255, 255, 0.6) 70%, 
+    transparent 100%
+  );
+  pointer-events: none;
+}
+
+/* ==========================================================================
+   Header & Live Pill
+   ========================================================================== */
+header {
+  margin-bottom: 36px;
+  text-align: left;
+}
+
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  margin-bottom: 16px;
+  background: rgba(16, 185, 129, 0.12);
+  border: 1px solid rgba(16, 185, 129, 0.32);
+  border-radius: 9999px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #6ee7b7;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 2px 10px rgba(16, 185, 129, 0.15);
+}
+
+.pulse-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background-color: #34d399;
+  box-shadow: 0 0 10px #34d399;
+  animation: pulseDot 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes pulseDot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.85); }
+}
+
+h1 {
+  margin: 0 0 10px;
+  font-family: var(--font-heading);
+  font-size: 2.35rem;
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.025em;
+  background: linear-gradient(135deg, #ffffff 25%, #c7d2fe 65%, #38bdf8 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 2px 12px rgba(99, 102, 241, 0.25));
+}
+
+header p {
+  margin: 0;
+  font-size: 1.02rem;
+  color: var(--text-secondary);
+  max-width: 560px;
+}
+
+/* ==========================================================================
+   Glass Sections & Dividers
+   ========================================================================== */
+.glass-section {
+  position: relative;
+  margin-top: 36px;
+  padding-top: 32px;
+  border-top: 1px solid var(--glass-border-subtle);
+}
+
+.glass-section::before {
+  content: "";
+  position: absolute;
+  top: -1px;
+  left: 0;
+  width: 80px;
+  height: 1px;
+  background: linear-gradient(90deg, #6366f1, #38bdf8, transparent);
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 22px;
+}
+
+h2 {
+  margin: 0;
+  font-family: var(--font-heading);
+  font-size: 1.45rem;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  color: #ffffff;
+}
+
+.section-tag {
+  font-size: 0.76rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--accent-cyan);
+  background: rgba(6, 182, 212, 0.12);
+  border: 1px solid rgba(6, 182, 212, 0.3);
+  padding: 4px 10px;
+  border-radius: 9999px;
+}
+
+.counter-badge {
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  color: var(--text-primary);
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--glass-border);
+  padding: 4px 12px;
+  border-radius: 9999px;
+  backdrop-filter: blur(8px);
+}
+
+/* ==========================================================================
+   Form Styling
+   ========================================================================== */
+#project-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  color: #e2e8f0;
+}
+
+input,
+select {
+  width: 100%;
+  min-height: 48px;
+  padding: 12px 16px;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  color: #ffffff;
+  background-color: var(--bg-input);
+  border: 1px solid var(--glass-border);
+  border-radius: 12px;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.25);
+}
+
+input::placeholder {
+  color: rgba(148, 163, 184, 0.55);
+}
+
+input:hover,
+select:hover {
+  border-color: rgba(255, 255, 255, 0.28);
+  background-color: rgba(15, 23, 42, 0.65);
+}
+
+/* Select element customization */
+.select-wrapper {
+  position: relative;
+}
+
+select {
+  appearance: none;
+  -webkit-appearance: none;
+  cursor: pointer;
+  padding-right: 44px;
+}
+
+.select-wrapper::after {
+  content: "";
+  position: absolute;
+  right: 18px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 10px;
+  height: 6px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 6' fill='none'%3E%3Cpath d='M1 1L5 5L9 1' stroke='%2394a3b8' stroke-width='1.75' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-size: contain;
+  background-repeat: no-repeat;
+  pointer-events: none;
+  transition: transform 0.2s ease;
+}
+
+.select-wrapper:hover::after {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 6' fill='none'%3E%3Cpath d='M1 1L5 5L9 1' stroke='%2338bdf8' stroke-width='1.75' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+}
+
+/* Styling options inside select */
+select option {
+  background-color: #0f172a;
+  color: #f8fafc;
+  padding: 10px;
+}
+
+/* Keyboard focus visibility */
+input:focus-visible,
+select:focus-visible,
+button:focus-visible {
+  outline: none;
+  border-color: rgba(99, 102, 241, 0.9);
+  background-color: var(--bg-input-focus);
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.35), 
+              0 0 20px rgba(99, 102, 241, 0.25);
+}
+
+/* ==========================================================================
+   Buttons (Liquid Glass & Actions)
+   ========================================================================== */
+.form-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 6px;
+}
+
+button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 48px;
+  padding: 12px 24px;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  border: 1px solid transparent;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  user-select: none;
+}
+
+button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+/* Primary Liquid Button */
+.btn-primary,
+#save-button {
+  position: relative;
+  overflow: hidden;
+  color: #ffffff;
+  background: linear-gradient(135deg, #4f46e5 0%, #3b82f6 50%, #06b6d4 100%);
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  box-shadow: var(--shadow-button-glow);
+}
+
+.btn-shine {
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg, 
+    transparent 0%, 
+    rgba(255, 255, 255, 0.35) 50%, 
+    transparent 100%
+  );
+  transform: skewX(-20deg);
+  transition: none;
+}
+
+.btn-primary:hover,
+#save-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 16px 36px -4px rgba(79, 70, 229, 0.65), 
+              0 0 25px rgba(6, 182, 212, 0.45);
+}
+
+.btn-primary:hover .btn-shine,
+#save-button:hover .btn-shine {
+  left: 200%;
+  transition: left 0.85s ease-in-out;
+}
+
+.btn-primary:active,
+#save-button:active {
+  transform: translateY(0) scale(0.98);
+}
+
+/* Secondary Frosted Cancel Button */
+.btn-secondary,
+#cancel-button {
+  color: var(--text-primary);
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.btn-secondary:hover,
+#cancel-button:hover {
+  background: rgba(255, 255, 255, 0.16);
+  border-color: rgba(255, 255, 255, 0.3);
+  transform: translateY(-1px);
+}
+
+.btn-secondary:active,
+#cancel-button:active {
+  transform: translateY(0) scale(0.98);
+}
+
+/* ==========================================================================
+   Status Message (Liquid Glass Alert Toast)
+   ========================================================================== */
+#message {
+  min-height: 1.6em;
+  margin: 16px 0 0;
+  padding: 0;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #38bdf8;
+  display: flex;
+  align-items: center;
+  transition: all 0.3s ease;
+}
+
+#message:not(:empty) {
+  padding: 12px 18px;
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px solid rgba(56, 189, 248, 0.35);
+  border-radius: 12px;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35), 0 0 16px rgba(56, 189, 248, 0.15);
+}
+
+#message.is-success {
+  color: #34d399;
+  border-color: rgba(16, 185, 129, 0.4);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35), 0 0 16px rgba(16, 185, 129, 0.2);
+}
+
+#message.is-error {
+  color: #fb7185;
+  border-color: rgba(244, 63, 94, 0.4);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35), 0 0 16px rgba(244, 63, 94, 0.2);
+}
+
+/* ==========================================================================
+   Empty State Card
+   ========================================================================== */
+#empty-state {
+  margin: 0;
+  padding: 36px 24px;
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px dashed rgba(255, 255, 255, 0.18);
+  border-radius: 18px;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+/* ==========================================================================
+   Project List & Project Cards
+   ========================================================================== */
+#project-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* Glass Card Item */
+#project-list li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 16px 20px;
+  background: linear-gradient(
+    135deg, 
+    rgba(255, 255, 255, 0.07) 0%, 
+    rgba(255, 255, 255, 0.02) 100%
+  );
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--glass-border);
+  border-top: 1px solid rgba(255, 255, 255, 0.24);
+  border-radius: 16px;
+  box-shadow: var(--shadow-card);
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+#project-list li:hover {
+  transform: translateY(-2px);
+  background: linear-gradient(
+    135deg, 
+    rgba(255, 255, 255, 0.1) 0%, 
+    rgba(255, 255, 255, 0.04) 100%
+  );
+  border-color: rgba(255, 255, 255, 0.28);
+  box-shadow: 0 16px 32px -6px rgba(0, 0, 0, 0.45), 
+              0 0 20px rgba(99, 102, 241, 0.15);
+}
+
+/* Card Content Area */
+.project-meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  flex: 1;
+  min-width: 0;
+}
+
+#project-list strong,
+.project-title {
+  font-family: var(--font-heading);
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #ffffff;
+  word-break: break-word;
+}
+
+/* Status Badges */
+.status-badge,
+#project-list span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  border-radius: 9999px;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  white-space: nowrap;
+}
+
+/* Fallback status styling when text includes " — " */
+#project-list span {
+  background: rgba(99, 102, 241, 0.14);
+  border: 1px solid rgba(99, 102, 241, 0.32);
+  color: #c7d2fe;
+}
+
+/* Semantic Status Variants */
+.status-planned,
+[data-status="Planned"] .status-badge,
+li[data-status="Planned"] span {
+  background: var(--status-planned-bg);
+  border: 1px solid var(--status-planned-border);
+  color: var(--status-planned-text);
+  box-shadow: 0 0 12px rgba(168, 85, 247, 0.2);
+}
+
+.status-in-progress,
+[data-status="In Progress"] .status-badge,
+li[data-status="In Progress"] span {
+  background: var(--status-progress-bg);
+  border: 1px solid var(--status-progress-border);
+  color: var(--status-progress-text);
+  box-shadow: 0 0 12px rgba(6, 182, 212, 0.2);
+}
+
+.status-completed,
+[data-status="Completed"] .status-badge,
+li[data-status="Completed"] span {
+  background: var(--status-completed-bg);
+  border: 1px solid var(--status-completed-border);
+  color: var(--status-completed-text);
+  box-shadow: 0 0 12px rgba(16, 185, 129, 0.2);
+}
+
+/* Action Button Group */
+.project-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+/* Item Buttons (Edit & Delete) */
+#project-list button {
+  min-height: 36px;
+  padding: 6px 14px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  border-radius: 10px;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+/* Edit Button */
+#project-list button:not([data-action="delete"]) {
+  color: #c7d2fe;
+  background: rgba(99, 102, 241, 0.16);
+  border: 1px solid rgba(99, 102, 241, 0.35);
+}
+
+#project-list button:not([data-action="delete"]):hover {
+  color: #ffffff;
+  background: rgba(99, 102, 241, 0.32);
+  border-color: rgba(99, 102, 241, 0.6);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(99, 102, 241, 0.35);
+}
+
+/* Delete Button */
+#project-list button[data-action="delete"] {
+  color: #fda4af;
+  background: rgba(244, 63, 94, 0.14);
+  border: 1px solid rgba(244, 63, 94, 0.32);
+}
+
+#project-list button[data-action="delete"]:hover {
+  color: #ffffff;
+  background: rgba(244, 63, 94, 0.32);
+  border-color: rgba(244, 63, 94, 0.6);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(244, 63, 94, 0.35);
+}
+
+/* ==========================================================================
+   Responsive Adaptations
+   ========================================================================== */
+@media (max-width: 640px) {
+  body {
+    padding: 18px 12px 48px;
+  }
+
+  main {
+    padding: 26px 20px;
+    border-radius: 20px;
+  }
+
+  main::before {
+    left: 20px;
+    right: 20px;
+  }
+
+  h1 {
+    font-size: 1.85rem;
+  }
+
+  .form-actions {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  #save-button,
+  #cancel-button {
+    width: 100%;
+  }
+
+  #project-list li {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 16px;
+  }
+
+  .project-actions {
+    width: 100%;
+    justify-content: flex-end;
+  }
+
+  #project-list button {
+    flex: 1;
+  }
+}

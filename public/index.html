@@ -1,0 +1,93 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Project Tracker — Liquid Glass Edition</title>
+  <meta name="description" content="A modern liquid glass project tracking interface for electronics and engineering ideas.">
+
+  <!-- Google Fonts: Outfit & Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <!-- Ambient Liquid Glass Orbs & Grid Canvas -->
+  <div class="liquid-canvas" aria-hidden="true">
+    <div class="liquid-orb orb-primary"></div>
+    <div class="liquid-orb orb-secondary"></div>
+    <div class="liquid-orb orb-accent"></div>
+    <div class="liquid-orb orb-ambient"></div>
+    <div class="liquid-grid"></div>
+  </div>
+
+  <main>
+    <header>
+      <div class="status-pill">
+        <span class="pulse-dot"></span>
+        <span class="status-pill-text">Cloud Database Active</span>
+      </div>
+      <h1>Student Project Tracker</h1>
+      <p>Curate, track, and synchronize hardware &amp; electronics projects in real time.</p>
+    </header>
+
+    <section aria-labelledby="form-title" class="glass-section">
+      <div class="section-header">
+        <h2 id="form-title">Add a Project</h2>
+        <span class="section-tag">New Entry</span>
+      </div>
+
+      <form id="project-form">
+        <div class="form-group">
+          <label for="name">Project Name</label>
+          <input
+            type="text"
+            id="name"
+            name="name"
+            placeholder="e.g. Arduino BLE Mesh Sensor Node"
+            required
+            maxlength="80"
+          >
+        </div>
+
+        <div class="form-group">
+          <label for="status">Project Status</label>
+          <div class="select-wrapper">
+            <select id="status" name="status">
+              <option value="Planned">Planned</option>
+              <option value="In Progress">In Progress</option>
+              <option value="Completed">Completed</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button id="save-button" type="submit" class="btn btn-primary">
+            <span class="btn-shine"></span>
+            <span class="btn-text">Save Project</span>
+          </button>
+          <button id="cancel-button" type="button" class="btn btn-secondary" hidden>
+            Cancel
+          </button>
+        </div>
+      </form>
+
+      <p id="message" role="status" aria-live="polite"></p>
+    </section>
+
+    <section aria-labelledby="list-title" class="glass-section">
+      <div class="section-header">
+        <h2 id="list-title">Project List</h2>
+        <span id="project-count" class="counter-badge">0 Projects</span>
+      </div>
+
+      <p id="empty-state">No Projects have been added yet.</p>
+      <ul id="project-list"></ul>
+    </section>
+  </main>
+</body>
+</html>
